@@ -1,3 +1,9 @@
+# main分支
+简单使用websocket实现在线聊天
+
+# next-api
+简单使用next-api和轮询实现在线聊天
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
