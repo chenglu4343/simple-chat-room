@@ -88,7 +88,7 @@ export default function Home() {
 
 	return (
 		<main className={styles.main}>
-			<h1 className={styles.header}>这是基于next jsAPI 轮询的简单在线聊天室</h1>
+			<h1 className={styles.header}>在线聊天室</h1>
 
 			<div className={styles['msg-list']} ref={listRef} onScroll={handleScroll}>
 				{messageList.map((item, index) => (

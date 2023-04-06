@@ -1,67 +1,68 @@
 @import './scrollbar.scss';
 
 .main {
-    --pd-x: 10px;
-    height: 100vh;
-    display: grid;
-    max-width: 750px;
-    margin: auto;
-    gap: 10px;
-    grid-template-rows: auto 1fr auto;
+	--pd-x: 10px;
+	height: 100vh;
+	display: grid;
+	max-width: 750px;
+	margin: auto;
+	gap: 10px;
+	grid-template-rows: auto 1fr auto;
 }
 
 .header {
-    text-align: center;
-    font-size: 16px;
-    margin-top: 10px;
+	text-align: center;
+	font-size: 16px;
+	padding: 10px 0;
+	background-color: rgb(197, 228, 255);
 }
 
 .footer {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-    padding: 0 var(--pd-x) 25px;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 10px;
+	padding: 0 var(--pd-x) 25px;
 }
 
 .msg-list {
-    @include scrollbar;
-    padding: 0 var(--pd-x);
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	@include scrollbar;
+	padding: 0 var(--pd-x);
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .msg-container {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 5px;
 }
 
 .user {
-    font-size: 8px;
-    color: gray;
+	font-size: 8px;
+	color: gray;
 }
 
 .msg {
-    max-width: 100%;
-    overflow-wrap: break-word;
-    padding: 5px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    font-size: 14px;
-    color: white;
-    background-color: rgb(68, 142, 240);
+	max-width: 100%;
+	overflow-wrap: break-word;
+	padding: 5px;
+	border: 1px solid gray;
+	border-radius: 5px;
+	font-size: 14px;
+	color: white;
+	background-color: rgb(68, 142, 240);
 }
 
 .self {
-    margin-left: auto;
-    align-items: flex-end;
+	margin-left: auto;
+	align-items: flex-end;
 
-    .msg {
-        color: unset;
-        background-color: unset;
-    }
+	.msg {
+		color: unset;
+		background-color: unset;
+	}
 }
