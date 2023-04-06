@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { nanoid } from 'nanoid'
 import { MyMessage } from '@/types/message'
+import { Input } from 'antd'
+import styles from '@/styles/Home.module.scss'
+
+import 'antd/dist/reset.css';
 
 const defaultUser = '匿名用户'
 
 export default function Home() {
+	const listRef = useRef<HTMLDivElement | null>(null)
+	const [isBottom, setIsBottom] = useState(true)
 	const [user, setUser] = useState('')
-	const [inputMsg, setInputMsg] = useState('')
+	const [inputMsg, setInputMsg] = useState<string | undefined>(undefined)
 	/** from为null代表系统消息，self代表自己发送的消息 */
 	const [messageList, setMessageList] = useState<(MyMessage & { self?: boolean })[]>([])
 
@@ -23,12 +29,33 @@ export default function Home() {
 						}
 					})
 				})
-		}, 3000)
+		}, 2000)
 
 		return () => {
 			clearInterval(interval)
 		}
 	}, [messageList])
+
+	useEffect(() => {
+		const element = listRef.current
+		if (element && isBottom) {
+			element.scrollTo({
+				behavior: 'auto',
+				top: element.scrollHeight
+			})
+		}
+	}, [messageList, isBottom])
+
+	const handleScroll = () => {
+		const element = listRef.current
+		if (element) {
+			if (Math.abs(element.scrollHeight - element.clientHeight - element.scrollTop) < 5) {
+				setIsBottom(true)
+			} else {
+				setIsBottom(false)
+			}
+		}
+	}
 
 	const sendMessage = async () => {
 		if (!inputMsg) return
@@ -46,7 +73,10 @@ export default function Home() {
 			body: JSON.stringify(message),
 		})
 
-		setInputMsg('')
+		/** fix：enter过后留有空白符 */
+		setTimeout(() => {
+			setInputMsg(undefined)
+		})
 		setMessageList((list) => [
 			...list,
 			{
@@ -57,23 +87,25 @@ export default function Home() {
 	}
 
 	return (
-		<>
-			<h5>这是基于next jsAPI 轮询的简单在线聊天室</h5>
+		<main className={styles.main}>
+			<h1 className={styles.header}>这是基于next jsAPI 轮询的简单在线聊天室</h1>
 
-			{messageList.map((item, index) => (
-				<div key={index}>
-					<span>{`user-${item.user}-`}</span>
-					<span>msg:{item.msg}</span>
-				</div>
-			))}
+			<div className={styles['msg-list']} ref={listRef} onScroll={handleScroll}>
+				{messageList.map((item, index) => (
+					<div key={index} className={`${styles['msg-container']} ${item.self && styles.self}`}>
+						<div className={styles.user}>{item.user}</div>
+						<div className={styles.msg}>{item.msg}</div>
+					</div>
+				))}
+			</div>
 
-			<span>用户名</span>
-			<input value={user} onChange={(e) => setUser(e.target.value)} placeholder={defaultUser} max={5}></input>
+			<div className={styles.footer}>
+				<span>用户名:</span>
+				<Input value={user} onChange={(e) => setUser(e.target.value)} placeholder={defaultUser} maxLength={5}></Input>
 
-			<br></br>
-
-			<input value={inputMsg} onChange={(e) => setInputMsg(e.target.value)} max={100}></input>
-			<button onClick={sendMessage}>send</button>
-		</>
+				<span>消息:</span>
+				<Input.TextArea value={inputMsg} onChange={(e) => setInputMsg(e.target.value)} maxLength={100} placeholder='message' showCount onPressEnter={sendMessage}></Input.TextArea>
+			</div>
+		</main>
 	)
 }
